@@ -1,17 +1,25 @@
+import React, { useReducer } from 'react'
 import type { AppProps } from 'next/app'
-import {ThemeProvider} from 'styled-components'
-import React from 'react'
+import { ThemeProvider } from 'styled-components'
 import GlobalStyles from '../styles/global-styles'
-import {theme} from '../theme'
+import { theme } from '../theme'
+import { CustomThemeContext, CustomThemeReducer, IThemeProvider } from '../context/ThemeContext'
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp ({ Component, pageProps }: AppProps) {
+  const [currentTheme, setNewTheme] = useReducer(CustomThemeReducer, []);
+  const value: IThemeProvider = { currentTheme, setNewTheme };
+
+  if (Array.isArray(currentTheme) && !currentTheme.length) {
+    setNewTheme(theme.dark);
+  }
+
   return (
-    <>
-      <GlobalStyles />
-      <ThemeProvider theme={theme} >
-          <Component {...pageProps} />
+    <CustomThemeContext.Provider value={value}>
+      <ThemeProvider theme={currentTheme.updatedTheme} >
+        <GlobalStyles />
+        <Component {...pageProps} />
       </ThemeProvider>
-    </>
+    </CustomThemeContext.Provider>
   )
 }
 export default MyApp

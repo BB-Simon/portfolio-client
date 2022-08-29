@@ -5,7 +5,7 @@ interface IProps {
     title: string;
 }
 
-const Title:React.FC<IProps> = ({title}) => {
+const Title: React.FC<IProps> = ({ title }) => {
     return (
         <>
             <div>
@@ -19,5 +19,4 @@ export default Title;
 
 const StyledTitle = styled.h1`
     font-size: 20px;
-    color: ${({theme}) => theme.colors.primary}
 `
